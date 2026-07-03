@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cute Cartoon Drawing</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #ffe6eb, #e0f7fa);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Comic Sans MS', cursive, 'Chalkboard SE', sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+
+    #introOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #ffe6eb;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+      cursor: pointer;
+    }
+
+    .big-heart {
+      font-size: 120px;
+      color: #ff1744;
+      animation: heartbeat 1.2s infinite ease-in-out;
+      filter: drop-shadow(0 0 15px rgba(255, 23, 68, 0.6));
+    }
+
+    .click-text {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #ff5252;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    @keyframes heartbeat {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.2);
+      }
+    }
+
+    #mainContent {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 1s ease;
+      z-index: 10;
+    }
+
+    canvas {
+      display: block;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      z-index: 10;
+    }
+
+    canvas:hover {
+      transform: scale(1.05);
+    }
+
+    @keyframes floaty {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+
+    .floating {
+      animation: floaty 3s ease-in-out infinite;
+    }
+
+    .message-text {
+      margin-top: 25px;
+      font-size: 26px;
+      color: #ff4081;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 64, 129, 0.2);
+      text-align: center;
+      z-index: 10;
+      letter-spacing: 1.5px;
+    }
+
+    #fxCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="introOverlay" onclick="startEverything()">
+    <div class="big-heart">❤️</div>
+    <div class="click-text">Click Me</div>
+  </div>
+  <audio id="bgMusic" src="/0703.MP3" loop></audio>
+  <canvas id="fxCanvas"></canvas>
+  <div id="mainContent">
+    <canvas id="cuteCanvas" class="floating" width="360" height="360"></canvas>
+    <div class="message-text">For You Na Kabb MaPrang</div>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('cuteCanvas').getContext('2d');
+    ctx.lineWidth = 8;
+    ctx.strokeStyle = "#333";
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+
+    ctx.beginPath();
+    ctx.arc(180, 170, 140, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(80, 310);
+    ctx.lineTo(80, 220);
+    ctx.quadraticCurveTo(180, 260, 280, 220);
+    ctx.lineTo(280, 310);
+
+    ctx.beginPath();
+    ctx.moveTo(130, 300);
+    ctx.lineTo(130, 345);
+    ctx.moveTo(230, 300);
+    ctx.lineTo(230, 345);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(120, 230);
+    ctx.bezierCurveTo(110, 250, 140, 260, 150, 250);
+    ctx.moveTo(240, 230);
+    ctx.bezierCurveTo(250, 250, 220, 260, 210, 250);
+    ctx.stroke();
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.translate(180, 245);
+    ctx.moveTo(0, 0);
+    ctx.bezierCurveTo(-18, -18, -38, 10, 0, 38);
+    ctx.bezierCurveTo(38, 10, 18, -18, 0, 0);
+    ctx.closePath();
+    const gradient = ctx.createLinearGradient(-30, -30, 30, 30);
+    gradient.addColorStop(0, "#ff7b7b");
+    gradient.addColorStop(1, "#ff1744");
+    ctx.fillStyle = gradient;
+    ctx.shadowColor = "rgba(255, 50, 50, 0.4)";
+    ctx.shadowBlur = 10;
+    ctx.strokeStyle = "#222";
+    ctx.lineWidth = 7;
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+    ctx.shadowBlur = 0;
+
+    ctx.beginPath();
+    ctx.arc(135, 150, 13, 0, Math.PI * 2);
+    ctx.arc(225, 150, 13, 0, Math.PI * 2);
+    ctx.fillStyle = "#222";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(120, 180, 7, 0, Math.PI * 2);
+    ctx.arc(240, 180, 7, 0, Math.PI * 2);
+    ctx.fillStyle = "#ff8a80";
+    ctx.globalAlpha = 0.5;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    ctx.beginPath();
+    ctx.ellipse(180, 175, 10, 7, 0, 0, Math.PI * 2);
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = "#222";
+    ctx.stroke();
+
+    const fxCanvas = document.getElementById('fxCanvas');
+    const fxCtx = fxCanvas.getContext('2d');
+
+    let animationActive = false;
+    let hearts = [];
+    let fireworks = [];
+    let particles = [];
+
+    function resizeFxCanvas() {
+      fxCanvas.width = window.innerWidth;
+      fxCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeFxCanvas);
+    resizeFxCanvas();
+
+    function startEverything() {
+      const overlay = document.getElementById('introOverlay');
+      overlay.style.opacity = '0';
+      overlay.style.visibility = 'hidden';
+
+      const mainContent = document.getElementById('mainContent');
+      mainContent.style.opacity = '1';
+
+      const music = document.getElementById('bgMusic');
+      music.play().catch(err => console.log("Auto-play blocked or waiting for source:", err));
+
+      animationActive = true;
+      loopFX();
+
+      setInterval(() => {
+        if (animationActive) createFirework();
+      }, 1500);
+    }
+
+    function createHeart() {
+      return {
+        x: Math.random() * fxCanvas.width,
+        y: fxCanvas.height + 20,
+        size: Math.random() * 15 + 10,
+        speed: Math.random() * 2 + 1,
+        opacity: Math.random() * 0.5 + 0.3,
+        wobble: Math.random() * 2,
+        wobbleSpeed: Math.random() * 0.03 + 0.01
+      };
+    }
+
+    function createFirework() {
+      const targetX = Math.random() * fxCanvas.width;
+      const targetY = Math.random() * (fxCanvas.height * 0.4) + fxCanvas.height * 0.1;
+      fireworks.push({
+        x: targetX,
+        y: fxCanvas.height,
+        targetY: targetY,
+        speed: 8,
+        color: `hsl(${Math.random() * 360}, 100%, 65%)`
+      });
+    }
+
+    function createExplosion(x, y, color) {
+      for (let i = 0; i < 40; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 4 + 2;
+        particles.push({
+          x: x,
+          y: y,
+          velX: Math.cos(angle) * speed,
+          velY: Math.sin(angle) * speed,
+          color: color,
+          alpha: 1,
+          decay: Math.random() * 0.02 + 0.015
+        });
+      }
+    }
+
+    function drawMiniHeart(ctx, x, y, size, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = "#ff5c7c";
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.bezierCurveTo(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);
+      ctx.bezierCurveTo(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function loopFX() {
+      if (!animationActive) return;
+      requestAnimationFrame(loopFX);
+
+      fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+
+      if (hearts.length < 25 && Math.random() < 0.05) {
+        hearts.push(createHeart());
+      }
+      for (let i = hearts.length - 1; i >= 0; i--) {
+        let h = hearts[i];
+        h.y -= h.speed;
+        h.wobble += h.wobbleSpeed;
+        let currentX = h.x + Math.sin(h.wobble) * 15;
+
+        drawMiniHeart(fxCtx, currentX, h.y, h.size, h.opacity);
+
+        if (h.y < -30) hearts.splice(i, 1);
+      }
+
+      for (let i = fireworks.length - 1; i >= 0; i--) {
+        let f = fireworks[i];
+        f.y -= f.speed;
+
+        fxCtx.beginPath();
+        fxCtx.arc(f.x, f.y, 3, 0, Math.PI * 2);
+        fxCtx.fillStyle = f.color;
+        fxCtx.fill();
+
+        if (f.y <= f.targetY) {
+          createExplosion(f.x, f.y, f.color);
+          fireworks.splice(i, 1);
+        }
+      }
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        let p = particles[i];
+        p.x += p.velX;
+        p.y += p.velY;
+        p.velY += 0.05;
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+
+        fxCtx.save();
+        fxCtx.globalAlpha = p.alpha;
+        fxCtx.fillStyle = p.color;
+        fxCtx.beginPath();
+        fxCtx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
+        fxCtx.fill();
+        fxCtx.restore();
+      }
+    }
+  </script>
+</body>
+
+</html>
